@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OIKOS — Modelo Financiero</title>
+<style>
+:root{
+  --e10:#001A57;--e20:#002775;--e50:#066AFE;--cb68:#00B3FF;--cb90:#CFE9FE;--cb96:#EAF4FF;--bg:#F4F8FD;
+  --ink:#032D60;--mute:#5A6B85;--line:#E1ECF8;--ok:#2E844A;
+  --display:'Avant Garde Demi SFDC','Century Gothic','Avenir Next',Futura,sans-serif;
+  --body:'Salesforce Sans','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);margin:0;font-weight:700}
+
+/* Barra superior */
+.top{display:flex;align-items:center;gap:14px;padding:14px 40px;background:var(--e10);color:#fff;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:15px;letter-spacing:3px}
+.badge{background:var(--cb68);color:var(--e10);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.warn{margin-left:auto;font-size:12px;opacity:.7}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;color:#fff;padding:84px 40px 72px;
+  background:radial-gradient(900px 500px at 88% -10%,rgba(0,179,255,.55),transparent 60%),radial-gradient(700px 500px at -5% 110%,rgba(6,106,254,.55),transparent 60%),linear-gradient(135deg,#001244,#002775 55%,#0A4FD0)}
+.hero:after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%);pointer-events:none}
+.hero-in{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#9FDCFF;font-weight:700}
+.eyebrow:before{content:'';width:34px;height:3px;border-radius:2px;background:var(--cb68)}
+.pill{display:inline-block;margin:22px 0 0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);border-radius:30px;padding:8px 18px;font-size:13px;font-weight:700;letter-spacing:.4px}
+.pill b{color:#7FD6FF}
+.hero h1{font-size:clamp(40px,6.4vw,92px);line-height:1.02;letter-spacing:-2px;margin:22px 0 0;max-width:1050px}
+.hero h1 em{font-style:normal;color:#7FD6FF;position:relative;white-space:nowrap}
+.hero h1 em{text-decoration:underline;text-decoration-color:var(--cb68);text-decoration-thickness:.07em;text-underline-offset:.08em}
+.lead{max-width:760px;font-size:19px;line-height:1.5;margin:30px 0 0;color:rgba(255,255,255,.88)}
+.lead b{color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+.step{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:22px 22px 20px;backdrop-filter:blur(8px);position:relative}
+.step small{display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#9FDCFF;font-weight:700}
+.step .n{font-family:var(--display);font-size:40px;font-weight:700;line-height:1.1;margin:10px 0 4px}
+.step span{font-size:13px;opacity:.8;line-height:1.4;display:block}
+.step.win{background:linear-gradient(160deg,#00B3FF,#066AFE);border-color:transparent;box-shadow:0 18px 40px rgba(0,179,255,.35)}
+.step.win small,.step.win span{color:#fff;opacity:.95}
+
+.intro{background:#fff;border-bottom:1px solid var(--line)}
+.intro-in{max-width:1180px;margin:0 auto;padding:56px 40px}
+.intro h2{font-size:30px;color:var(--e20);letter-spacing:-.5px;max-width:820px;line-height:1.2}
+.intro .lede{max-width:820px;font-size:16px;line-height:1.6;color:#32476b;margin:14px 0 0}
+.intro .lede b{color:var(--e20)}
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.ic{background:var(--cb96);border-radius:20px;padding:22px;border-top:5px solid var(--e50)}
+.ic.b{border-top-color:var(--cb68)}.ic.c{border-top-color:var(--e20)}
+.ic .no{font-family:var(--display);font-size:12px;letter-spacing:1px;color:var(--e50);font-weight:700}
+.ic h3{font-size:18px;color:var(--e20);margin:6px 0 8px}
+.ic p{margin:0;font-size:13.5px;line-height:1.5;color:#32476b}
+.rng{display:inline-block;margin-top:14px;background:#fff;color:var(--e20);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700}
+.note{margin-top:22px;font-size:13px;color:var(--mute);line-height:1.5;max-width:820px}
+.real{display:flex;gap:16px;align-items:center;background:linear-gradient(135deg,var(--e20),var(--e50));color:#fff;border-radius:20px;padding:20px 26px;margin-bottom:34px;box-shadow:0 12px 28px rgba(6,106,254,.25)}
+.real .ic2{flex:none;width:44px;height:44px;border-radius:50%;background:var(--cb68);color:var(--e10);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.real p{margin:0;font-size:16px;line-height:1.5}.real b{color:#9FDCFF}
+.disco h2{font-size:30px;color:var(--e20);letter-spacing:-.5px;margin:0 0 10px}
+.disco .lede{max-width:820px;font-size:16px;line-height:1.6;color:#32476b;margin:0 0 26px}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:46px}
+.dc{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 8px 24px rgba(0,39,117,.06)}
+.dc h3{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--e50);margin:0 0 12px}
+.dc ol{list-style:none;margin:0;padding:0}
+.dc li{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;color:#32476b;line-height:1.35}
+.dc li:first-child{border-top:0}
+.dc li i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--cb90);color:var(--e20);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;align-self:center}
+.dc li span{flex:1}.dc li b{font-family:var(--display);font-size:15px;color:var(--e20);white-space:nowrap}
+/* Layout */
+.wrap{display:block;max-width:1280px;margin:0 auto;padding:44px 40px 30px}
+.lvwrap{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+.lvwrap .g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+aside{background:#fff;border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(0,39,117,.08);border:1px solid var(--line)}
+aside h3{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--e50);margin:0 0 12px}
+.sc{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--cb96);padding:5px;border-radius:14px}
+.sc button{line-height:1.2;border:0;background:transparent;padding:10px 2px;border-radius:10px;font-weight:700;font-size:12px;color:var(--e20);cursor:pointer;transition:.2s;font-family:inherit}
+.sc button.on{background:var(--e50);color:#fff;box-shadow:0 6px 14px rgba(6,106,254,.35)}
+.sc button:not(.on):hover{background:#fff}
+.sep{height:1px;background:var(--line);margin:22px 0}
+label{display:block;font-size:12.5px;line-height:1.35;margin-top:14px;color:#2b3f5e;font-weight:600}
+input[type=number]{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;margin-top:6px;font-family:inherit;color:var(--ink);background:#fff;font-weight:700}
+input:focus{outline:none;border-color:var(--cb68);box-shadow:0 0 0 4px rgba(0,179,255,.18)}
+input.fixed{background:#F1F5FA;color:#5a6b85;cursor:not-allowed;border-color:transparent;font-weight:600}
+.chip{display:block;margin-top:6px;background:var(--cb96);color:#0B3FA8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;line-height:1.35}
+details.data{margin-top:4px}
+details.data summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--e50);font-weight:700;padding:4px 0}
+details.data summary::-webkit-details-marker{display:none}
+details.data summary:after{content:'+';font-size:20px;line-height:1}
+details.data[open] summary:after{content:'–'}
+.disc{background:#FFF7E0;border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0 0;color:#6b4e00;line-height:1.4}
+.sub{font-size:11px;font-weight:700;color:var(--mute);margin:18px 0 -4px;letter-spacing:.8px;text-transform:uppercase}
+
+main{min-width:0}
+.sec{display:flex;align-items:baseline;gap:14px;margin:0 0 20px}
+.sec i{font-style:normal;font-family:var(--display);color:var(--cb68);font-size:15px;font-weight:700}
+.sec h2{font-size:30px;color:var(--e20);letter-spacing:-.5px}
+.sec small{margin-left:auto;font-size:12px;font-weight:700;background:var(--cb90);color:var(--e20);padding:5px 12px;border-radius:20px}
+section{margin-bottom:64px}
+
+/* KPIs */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:#fff;border-radius:22px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,39,117,.06);padding:22px}
+.kpi small{display:block;color:var(--mute);font-size:12px;font-weight:600;min-height:30px;line-height:1.3}
+.kpi div{font-family:var(--display);font-size:30px;font-weight:700;color:var(--e20);margin-top:8px;letter-spacing:-.5px;line-height:1.1}
+.kpi:first-child{background:linear-gradient(150deg,var(--e20),var(--e50));color:#fff;border:0}
+.kpi:first-child small{color:#BFE3FF}.kpi:first-child div{color:#fff}
+
+/* Barra de contribución */
+
+/* Punto de equilibrio */
+.be-lede{font-size:16px;line-height:1.6;color:#32476b;max-width:820px;margin:-6px 0 22px}.be-lede b{color:var(--e20)}
+.bsteps{display:grid;grid-template-columns:1fr 1.1fr 1.4fr;gap:16px}
+.bs{position:relative;padding-top:30px}.bs .bn{position:absolute;top:-14px;left:22px;width:32px;height:32px;border-radius:50%;background:var(--e50);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--display);box-shadow:0 6px 14px rgba(6,106,254,.35)}
+.bs h3{font-size:18px;color:var(--e20);margin:0 0 6px}
+.bs .big{white-space:nowrap}.bs .big .u{font-size:20px;color:var(--mute);font-family:var(--body);font-weight:600;letter-spacing:0}
+.bs .big{font-size:40px!important}
+.lv-list li>span em{display:block;font-style:normal;font-size:11px;color:var(--mute);margin-top:2px}
+.be .card small{color:var(--mute);font-size:12px;font-weight:600;line-height:1.4;display:block}
+.be .big{font-family:var(--display);font-size:56px;font-weight:700;color:var(--e50);line-height:1;margin:14px 0 10px;letter-spacing:-1px}
+.be .mid .big{font-size:40px}
+.be .exp{font-size:12px;color:var(--mute);line-height:1.5;margin:0}
+.lv-list{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:10px}
+.lv-list li{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:10px 12px;background:var(--cb96);border-radius:12px;font-size:13px}
+.lv-list li span{color:var(--mute)}
+.lv-list li b{color:var(--e20);font-size:15px;white-space:nowrap}
+.lv-list em{display:block;font-style:normal;font-size:11px;color:var(--mute);font-weight:400;margin-top:2px}
+
+/* Palancas */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.lv{display:flex;flex-direction:column;position:relative;overflow:hidden;padding:26px}
+.lv:before{content:'';position:absolute;left:0;right:0;top:0;height:6px;background:var(--e50)}
+.lv.b:before{background:var(--cb68)}.lv.c:before{background:var(--e20)}
+.lv .no{font-family:var(--display);font-size:13px;color:var(--e50);font-weight:700;letter-spacing:1px}
+.lv h3{font-size:19px;line-height:1.2;margin:8px 0 18px;color:var(--e20);min-height:46px}
+.row{margin-bottom:14px}
+.tag{display:block;font-size:10.5px;font-weight:700;color:var(--e50);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px}
+.row p{margin:0;font-size:13.5px;line-height:1.5;color:#32476b}
+.amt{font-family:var(--display);font-size:34px;font-weight:700;color:var(--e20);letter-spacing:-.8px;margin-top:auto;padding-top:14px;border-top:1px dashed var(--cb90);line-height:1.1}
+.amt small{display:block;font-family:var(--body);font-size:12px;color:var(--mute);font-weight:600;letter-spacing:0;margin-top:4px}
+.avg{background:var(--cb96);border-radius:12px;padding:10px 12px;font-size:12px;margin-top:14px;color:#0B3FA8;line-height:1.4}
+.src{font-size:11px;color:var(--mute);margin-top:3px}
+details.calc{margin-top:12px}
+details.calc summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--e50);list-style:none}
+details.calc summary::-webkit-details-marker{display:none}
+details.calc summary:before{content:'▸ ';}
+details.calc[open] summary:before{content:'▾ ';}
+.f{font-family:ui-monospace,Menlo,monospace;background:#F1F6FC;padding:12px;border-radius:12px;font-size:11.5px;line-height:1.6;margin:10px 0 0;color:#23406e}
+
+/* Tabla */
+.tw{overflow-x:auto;border-radius:22px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,39,117,.06);background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--e20);color:#fff;text-align:center;padding:16px 14px;font-weight:700;font-size:13px}
+th small{display:block;font-weight:400;opacity:.7;font-size:11px;margin-top:2px}
+td{white-space:nowrap;padding:16px 14px;text-align:center;border-bottom:1px solid var(--line);color:var(--ink)}
+th:first-child,td:first-child{text-align:left}th:last-child,td:last-child{text-align:left}
+td.act{background:var(--cb96);font-weight:700;color:var(--e20)}th.act{background:var(--e50)}
+tr.tot td{background:#F7FAFE;font-size:16px;border-bottom:0;font-weight:700;color:var(--e20)}
+tr.tot td.act{background:var(--cb90)}
+td.srcc{white-space:normal;color:var(--mute);font-size:12px;max-width:240px}
+
+footer{font-size:12px;color:var(--mute);line-height:1.6;max-width:900px;padding:0 0 40px;border-top:1px solid var(--line);padding-top:22px}
+
+@media print{@page{size:A4 landscape}aside{display:none}.wrap{display:block}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@media(max-width:1100px){.dg{grid-template-columns:1fr}.ig{grid-template-columns:1fr 1fr}.wrap{padding:30px 20px}.lvwrap{grid-template-columns:1fr}.g4,.g3,.bsteps,.steps{grid-template-columns:1fr 1fr}.hero{padding:56px 22px}.top{padding:14px 20px}}
+@media(max-width:700px){.ig{grid-template-columns:1fr}.intro-in{padding:40px 20px}.g4,.g3,.bsteps,.steps{grid-template-columns:1fr}.hero h1 em{white-space:normal}.lv h3{min-height:0}}
+</style></head><body>
+<div class="top"><span class="brand">OIKOS</span><span class="badge">Inmobiliario</span><span class="warn">Solo uso interno · Validar con el cliente antes de presentar</span></div>
+
+<header class="hero"><div class="hero-in" id="hero"></div></header>
+
+<section class="intro"><div class="intro-in">
+<div class="disco"><h2>Los datos con los que armamos el modelo</h2>
+<p class="lede">Estos son los valores principales que levantamos en el <b>discovery con el equipo de Oikos</b>. Sobre ellos construimos todos los supuestos del modelo.</p>
+<div class="dg" id="disc"></div></div>
+<div class="real"><span class="ic2">✓</span><p>Este retorno de la inversión lo calculamos con los <b>datos que nos entregó el equipo de CRM y Transformación Digital de Oikos</b>. Nos fundamentamos en <b>data real</b> del cliente.</p></div>
+<h2>Qué estamos moviendo: tres palancas, cada una con su rango</h2>
+<p class="lede">Partimos de los <b>datos del cliente</b> que nos entregó el equipo de CRM (equipo, ventas e inversión). Ya están almacenados en el modelo y se pueden consultar en <b>«Datos del cliente»</b>, en el panel izquierdo; no se modifican. Lo que sí se ajusta son <b>tres palancas</b>. En el escenario pesimista solo se mueve la segunda.</p>
+<div class="ig">
+<div class="ic"><span class="no">PALANCA 1</span><h3>Productividad</h3><p>% de horas manuales que el equipo recupera gracias a la automatización.</p><span class="rng">Rango: 15% – 30%</span></div>
+<div class="ic b"><span class="no">PALANCA 2</span><h3>Pipeline por campañas</h3><p>% de ventas adicionales que generan las campañas automatizadas de email y WhatsApp.</p><span class="rng">Rango: 4% – 8%</span></div>
+<div class="ic c"><span class="no">PALANCA 3</span><h3>Mayor conversión</h3><p>% de ventas adicionales por responder a tiempo y mejorar la tasa de conversión actual.</p><span class="rng">Rango: 2% – 4%</span></div>
+</div>
+<p class="note">Escenarios: <b>pesimista</b> (solo la palanca 2, con el mínimo necesario para pagar el proyecto), <b>conservador</b> y <b>agresivo</b> (las tres palancas dentro de sus rangos).</p>
+</div></section>
+<div class="wrap"><main>
+<section><div class="sec"><i>01</i><h2>Palancas del retorno</h2></div><div class="lvwrap"><aside id="side"></aside><div class="g3" id="levers"></div></div></section>
+
+<section><div class="sec"><i>02</i><h2>Resultado</h2><small id="actname"></small></div>
+<div class="g4" id="kpis"></div></section>
+
+<section><div class="sec"><i>03</i><h2>Punto de equilibrio</h2></div><div class="be" id="be"></div></section>
+
+
+<footer>Fuentes: BVD de Salesforce (productividad y conversión). El pipeline adicional es un supuesto del modelo. Datos de equipo, ventas e inversión: proporcionados por el equipo de CRM. Más del 40% de los inputs son supuestos — validar con el cliente antes de presentar externamente. Datos de CRM no consultados. Uso interno · solutionswork.space/value</footer>
+</main></div>
+<script>
+const IN=[
+['Equipo y operación',null],
+['adm','Administradores CRM/Marketing',10],['sel','Comerciales',52],['ha','Horas diarias manuales por administrador',4],['hs','Horas diarias manuales por comercial',2],['wks','Semanas laborales al año',48],['cost','Costo por hora (USD)',25],
+['Ventas',null],
+['leads','Leads al mes (promedio)',11000],['conv','Conversión lead→venta actual (%)',3],['ticket','Ticket promedio por venta (USD)',211520],['marg','Margen (%)',20],
+['Inversión',null],
+['lic','Licencias Fase 1 (USD/año)',52000],['impl','Implementación Fase 1 (USD, única vez)',22700],
+['Palancas (escriba o use el escenario)',null],
+['p1','1. % de horas manuales recuperadas',15],['p2','2. % de ventas adicionales por pipeline de campañas',4],['p3','3. % de ventas adicionales por mayor conversión',2]];
+const SC={Mínimo:null,Conservador:[15,4,2],Agresivo:[30,8,4]};
+const SCsub={Mínimo:'Una sola palanca',Conservador:'Base',Agresivo:'Optimista'};
+let act='Mínimo';
+const LB={Mínimo:'Escenario pesimista',Conservador:'Conservador',Agresivo:'Agresivo'};
+function minSc(){const o={};IN.forEach(x=>{if(x[1]!==null)o[x[0]]=g(x[0])});const mg=o.ticket*o.marg/100,i1=o.lic+o.impl,v=i1/mg,sales=o.leads*12*o.conv/100;return[0,sales>0?Math.ceil(v/sales*10000)/100:0,0]}
+function scv(k){return SC[k]||minSc()}
+const CH={p1:'📘 BVD: 20% · Rango CG: 15–30%',p2:'📘 Supuesto del modelo · Rango: 4–8% de leads',p3:'📘 BVD Salesforce · Rango: 2–4%'};
+
+/* Panel lateral: palancas editables arriba, datos del cliente plegados */
+let fixedH='',levH='',cur='',fx=true;
+IN.forEach(x=>{
+  if(x[1]===null){fx=x[0]!=='Palancas (escriba o use el escenario)';cur=x[0];if(fx)fixedH+=`<div class="sub">${x[0]}</div>`;return}
+  const inp=`<label>${x[1]}<input type="number" step="any" min="0" id="${x[0]}" value="${x[2]}" ${fx?'readonly class="fixed"':''}>${CH[x[0]]?`<span class="chip">${CH[x[0]]}</span>`:''}</label>`;
+  if(fx)fixedH+=inp;else levH+=inp;
+});
+side.innerHTML='<h3>Escenario</h3><div class="sc">'+Object.keys(SC).map(k=>`<button data-s="${k}" class="${k==act?'on':''}">${LB[k]}</button>`).join('')+'</div>'
++'<div class="sep"></div><h3>Palancas</h3>'+levH.replace('margin-top:14px','')
++'<div class="sep"></div><details class="data"><summary>Datos del cliente</summary><div class="disc">🔒 Datos proporcionados por el equipo de CRM (Equipo y operación, Ventas e Inversión). No editables.</div>'+fixedH+'</details>';
+
+const $=n=>'USD '+Math.round(n).toLocaleString('es-CO');const g=id=>parseFloat(document.getElementById(id).value)||0;
+function lv(o){const hrs=(o.adm*o.ha+o.sel*o.hs)*5*o.wks;const m=o.marg/100,c=o.conv/100,L=o.leads*12;
+const a=hrs*o.cost*o.p1/100;const xl=L*o.p2/100;const b=xl*c*o.ticket*m;const xs=L*c*o.p3/100;const d=xs*o.ticket*m;return[a,b,d,hrs,xl,xs]}
+function fm(m){return m>=1?m.toFixed(1)+' meses':m<=0||m>=99?'n/d':Math.max(1,Math.round(m*30))+' días'}
+function pb(inv,b){return b>0?inv/(b/12):99}
+
+function calc(){const o={};IN.forEach(x=>{if(x[1]!==null)o[x[0]]=g(x[0])});
+const[a,b,c,hrs,xl,xs]=lv(o),t=a+b+c,i1=o.lic+o.impl,i2=o.lic,ra=[.8,1,1];
+const B=ra.map(r=>t*r),I=[i1,i2,i2];let cb=0,ci=0;const CB=[],CI=[];B.forEach((x,j)=>{cb+=x;ci+=I[j];CB.push(cb);CI.push(ci)});
+const mg=o.ticket*o.marg/100,be1=i1/mg,sv=o.leads*12*o.conv/100;
+const cv=n=>n.toLocaleString('es-CO');
+
+/* Hero: escenario ultra pesimista (Mínimo) — una sola palanca */
+const pm=minSc()[1],leadsX=Math.round(o.leads*12*pm/100);
+hero.innerHTML=`<span class="eyebrow">OIKOS · Fase 1 · Modelo financiero</span><br>
+<span class="pill">Escenario <b>pesimista</b> · una sola palanca</span>
+<h1>Con solo <em>+${pm.toFixed(2)}%</em> de ventas por campañas, el proyecto se paga solo.</h1>
+<p class="lead">Moviendo únicamente <b>el % de ventas adicionales por pipeline de campañas</b>, recuperamos <b>${Math.ceil(be1)} departamentos adicionales</b> y cubrimos la inversión del Año 1. Sin contar productividad ni mayor conversión.</p>
+<div class="steps">
+<div class="step"><small>Única palanca</small><div class="n">+${pm.toFixed(2)}%</div><span>de leads adicionales por campañas (≈ ${cv(leadsX)} leads extra)</span></div>
+<div class="step"><small>Ventas adicionales</small><div class="n">${Math.ceil(be1)}</div><span>departamentos adicionales en el año</span></div>
+<div class="step win"><small>Resultado</small><div class="n">Se paga solo</div><span>Inversión Año 1: ${$(i1)}</span></div>
+</div>`;
+
+actname.textContent='Escenario: '+LB[act].replace('Escenario ','');
+kpis.innerHTML=[['Beneficio anual (régimen pleno)',$(t)],['Inversión Año 1',$(i1)],['Payback',fm(pb(i1,t))],['ROI Año 1',Math.round((t-i1)/i1*100).toLocaleString('es-CO')+'%']].map(x=>`<div class="card kpi"><small>${x[0]}</small><div>${x[1]}</div></div>`).join('');
+
+
+const m1=be1/sv*100,m2=m1,m3=i1/(lv({...o,p1:100})[0]||1)*100;
+be.innerHTML=`<p class="be-lede">¿Cuánto tendría que mejorar el negocio para que la inversión del Año 1 (<b>${$(i1)}</b>) se recupere? Lo resolvemos en tres pasos.</p>
+<div class="bsteps">
+<div class="card bs"><span class="bn">1</span><h3>Cuánto deja cada venta</h3><small>Ganancia por venta (${o.marg}% de margen sobre un ticket de ${$(o.ticket)})</small><div class="big">${$(mg)}</div><p class="exp">Es lo que gana Oikos por cada departamento adicional que se venda.</p></div>
+<div class="card bs"><span class="bn">2</span><h3>Cuántas ventas pagan el proyecto</h3><small>Inversión del Año 1 ÷ ganancia por venta</small><div class="big">${Math.ceil(be1)} <span class="u">ventas</span></div><p class="exp">${$(i1)} ÷ ${$(mg)} = ${be1.toFixed(2)}, que se redondea a ${Math.ceil(be1)} ventas adicionales. Hoy Oikos vende ${Math.round(sv).toLocaleString('es-CO')} al año (${(o.leads*12).toLocaleString('es-CO')} leads × ${o.conv}%).</p></div>
+<div class="card bs"><span class="bn">3</span><h3>Qué tendría que pasar</h3><small>Mejora mínima en UNA sola palanca, sin tocar las otras dos</small><ul class="lv-list">
+<li><span>Pipeline<em>más leads por campañas</em></span><b>+${m1.toFixed(2)}% de leads<em>≈ ${Math.round(o.leads*12*m1/100).toLocaleString('es-CO')} leads extra al año</em></b></li>
+<li><span>Conversión<em>más leads que compran</em></span><b>+${m2.toFixed(2)}% relativo<em>de ${o.conv}% a ${(o.conv*(1+m2/100)).toFixed(3)}%</em></b></li>
+<li><span>Productividad<em>horas manuales recuperadas</em></span><b>${m3.toFixed(1)}%<em>de las horas manuales</em></b></li></ul></div>
+</div>`;
+
+levers.innerHTML=[
+['','1. Productividad','Administradores y comerciales pierden horas cada día en listas, scripts y reportes manuales.','Asignación, audiencias y reportes automáticos; el equipo recupera horas para vender.',`(${o.adm} administradores × ${o.ha} h/día + ${o.sel} comerciales × ${o.hs} h/día) × 5 días × ${o.wks} semanas<br>= ${cv(Math.round(hrs))} horas manuales al año<br>× USD ${o.cost} por hora × ${o.p1}% de horas recuperadas`,a,'BVD: 20% · Rango CG: 15–30% (mejora de productividad)','BVD de Salesforce'],
+['b','2. Pipeline adicional por campañas automatizadas','Cada lead recibe de 4 a 7 contactos con seguimiento manual: se atiende menos volumen del que llega.','Campañas automáticas por email y WhatsApp nutren y reactivan leads sin esfuerzo manual.',`${cv(o.leads*12)} leads al año (${cv(o.leads)} al mes en promedio × 12) × ${o.p2}% de leads adicionales por campañas<br>= ${cv(Math.round(xl))} leads extra<br>× ${o.conv}% de conversión lead→venta actual × USD ${o.ticket.toLocaleString('es-CO')} de ticket por venta × ${o.marg}% de margen`,b,'Rango del modelo: 4%–8% de leads adicionales','Supuesto del modelo'],
+['c','3. Mayor tasa de conversión','Sin reloj de gestión ni alertas, los leads se contactan tarde y se pierden.','Respuesta a tiempo, historial único por cliente y alertas elevan la conversión actual.',`${cv(o.leads*12)} leads al año × ${o.conv}% de conversión lead→venta actual = ${cv(Math.round(o.leads*12*o.conv/100))} ventas<br>× ${o.p3}% de mejora relativa en la conversión = ${xs.toFixed(1)} ventas extra<br>× USD ${o.ticket.toLocaleString('es-CO')} de ticket por venta × ${o.marg}% de margen`,c,'Rango: 2%–4% de mejora en conversión','BVD de Salesforce']
+].map(x=>`<div class="card lv ${x[0]}"><span class="no">PALANCA ${x[1].charAt(0)}</span><h3>${x[1].slice(3)}</h3>
+<div class="row"><span class="tag">Problema hoy</span><p>${x[2]}</p></div>
+<div class="row"><span class="tag">Qué cambia</span><p>${x[3]}</p></div>
+<div class="amt">${$(x[5])}<small>por año</small></div>
+<div class="avg"><b>${x[6]}</b><div class="src">Fuente: ${x[7]}</div></div>
+<details class="calc"><summary>Ver cálculo</summary><p class="f">${x[4]}</p></details></div>`).join('');
+
+}
+document.querySelectorAll('input').forEach(e=>e.oninput=calc);
+document.querySelectorAll('.sc button').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.sc button').forEach(x=>x.classList.remove('on'));btn.classList.add('on');act=btn.dataset.s;const s=scv(act);['p1','p2','p3'].forEach((k,i)=>document.getElementById(k).value=s[i]);calc()});
+{const s0=scv(act);['p1','p2','p3'].forEach((k,i)=>document.getElementById(k).value=s0[i])}
+{const U={adm:'',sel:'',ha:' h',hs:' h',wks:'',cost:'USD ',leads:'',conv:'%',ticket:'USD ',marg:'%',lic:'USD ',impl:'USD '};
+let n=0,h='',open=false;IN.forEach(x=>{if(x[1]===null){if(open)h+='</ol></div>';open=false;if(x[0].startsWith('Palancas'))return;h+=`<div class="dc"><h3>${x[0]}</h3><ol>`;open=true;return}
+if(!open)return;n++;const v=g(x[0]).toLocaleString('es-CO'),u=U[x[0]];h+=`<li><i>${n}</i><span>${x[1]}</span><b>${u.startsWith('USD')?u+v:v+u}</b></li>`});
+if(open)h+='</ol></div>';disc.innerHTML=h}
+calc();
+</script></body></html>
